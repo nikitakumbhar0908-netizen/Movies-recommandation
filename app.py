@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import pickle
 import requests
+import os
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
 # -----------------------------
 # Page Configuration
@@ -18,7 +21,14 @@ st.set_page_config(
 # -----------------------------
 movies = pd.read_csv("clean_movies.csv")
 
-similarity = pickle.load(open("similarity.pkl", "rb"))
+
+if not os.path.exists("similarity.pkl"):
+    if st.button("Genrate similarities"):
+        cv = CountVectorizer(max_features=5000, stop_words='english')
+        vectors = cv.fit_transform(movies['tags']).toarray()
+        similarity = cosine_similarity(vectors)
+        pickle.dump(movies, open("movie_list.pkl", "wb"))
+
 
 movie_list = movies["title"].values
 st.markdown("""
@@ -123,6 +133,8 @@ def recommend(movie):
 
 
 if st.button("🎬 Recommend Movies"):
+    similarity = pickle.load(open("similarity.pkl", "rb"))
+
 
     recommendations = recommend(selected_movie)
 

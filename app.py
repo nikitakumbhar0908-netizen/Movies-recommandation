@@ -133,14 +133,14 @@ def recommend(movie):
 
 
 if st.button("🎬 Recommend Movies"):
-    similarity = pickle.load(open("similarity.pkl", "rb"))
-
 
     recommendations = recommend(selected_movie)
 
     st.markdown("## 🌟 Recommended Movies")
 
     for i, movie in enumerate(recommendations, start=1):
+        similarity = pickle.load(open("similarity.pkl", "rb"))
+
 
         st.markdown(f"""
         <div style="

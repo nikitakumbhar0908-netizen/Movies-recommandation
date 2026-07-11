@@ -139,7 +139,6 @@ if st.button("🎬 Recommend Movies"):
     st.markdown("## 🌟 Recommended Movies")
 
     for i, movie in enumerate(recommendations, start=1):
-        similarity = pickle.load(open("similarity.pkl", "rb"))
 
 
         st.markdown(f"""
